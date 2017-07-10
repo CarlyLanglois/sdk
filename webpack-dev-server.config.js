@@ -14,6 +14,10 @@ const config = {
       'webpack/hot/only-dev-server',
       './examples/basic/app.jsx'
     ],
+    zoom: [
+      'webpack/hot/only-dev-server',
+      './examples/zoom/app.jsx'
+    ]
   },
   // Server Configuration options
   devServer: {
