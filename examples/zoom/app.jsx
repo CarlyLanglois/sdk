@@ -83,16 +83,39 @@ function main() {
     store.dispatch(mapActions.setView(initView.center, initView.zoom));
   };
 
+  // Add a random point to the map
+  const addRandomPoints = () => {
+    for (let i = 0; i < 10; i++) {
+      store.dispatch(mapActions.addFeatures('points', [{
+        type: 'Feature',
+        properties: {
+          title: 'Random Point',
+          isRandom: true,
+        },
+        geometry: {
+          type: 'Point',
+          coordinates: [(Math.random() * 360) - 180, (Math.random() * 180) - 90],
+        },
+      }]));
+    }
+  };
+
+  const removeRandomPoints = () => {
+    store.dispatch(mapActions.removeFeatures('points', ['==', 'isRandom', true]));
+  };
+
   // place the map on the page.
   ReactDOM.render(<SdkMap store={store} />, document.getElementById('map'));
 
   // add some buttons to demo some actions.
   ReactDOM.render((
     <div>
-      <button onClick={zoomToNullIsland}>Zoom to Null Island</button>
       <button onClick={zoomToInitView}>Zoom to Initial View</button>
+      <button onClick={zoomToNullIsland}>Zoom to Null Island</button>
+      <button onClick={addRandomPoints}>Add 10 random points</button>
+      <button onClick={removeRandomPoints}>Remove random points</button>
     </div>
-  ), document.getElementById('controls'));
+  ), document.getElementById('header'));
 }
 
 main();
