@@ -374,9 +374,12 @@ export class Map extends React.Component {
     // layers is an array.
     for (let i = 0, ii = layersDef.length; i < ii; i++) {
       const layer = layersDef[i];
+      // console.log(layer.source)
       const is_visible = layer.layout ? layer.layout.visibility !== 'none' : true;
       const maxResolution = layer.minZoom ? Math.round(zoomToResolution(layer.minZoom)) : 156544;
       const minResolution = layer.maxZoom ? zoomToResolution(layer.maxZoom) : 0.0005831682455839253;
+      // const paint = layer.paint;
+      // console.log('paint = ', paint)
       layer_exists[layer.id] = true;
 
       // if the layer is not on the map, create it.
@@ -386,6 +389,12 @@ export class Map extends React.Component {
         } else {
           const new_layer = this.configureLayer(sourcesDef, layer);
           new_layer.set('name', layer.id);
+          if (new_layer.get('name') === 'null-island') {
+            const feature = new_layer.getSource().getFeatures()[0];
+            const style = new_layer.getStyle();
+            // console.log('style object = ', style(feature, 39135.76))
+            // console.log('style function = ', new_layer.getStyleFunction({ version: 8, layers: [new_layer] }, new_layer.source))
+          }
 
           // if the new layer has been defined, add it to the map.
           if (new_layer !== null) {
@@ -398,10 +407,20 @@ export class Map extends React.Component {
       // handle visibility and z-ordering.
       // TODO: handle other changes to existing layers
       if (layer.id in this.layers) {
+        const layer_src = sourcesDef[layer.source];
+        // console.log(layer_src)
+        if (layer_src.type === 'geojson') {
+          const new_style = getStyleFunction({
+            version: 8,
+            layers: [layer],
+          }, layer.source);
+          this.layers[layer.id].setStyle(new_style);
+        }
         this.layers[layer.id].setVisible(is_visible);
         this.layers[layer.id].setZIndex(i);
         this.layers[layer.id].setMinResolution(minResolution);
         this.layers[layer.id].setMaxResolution(maxResolution);
+        // this.layers[layer.id].setStyle(new_style);
       }
     }
 
