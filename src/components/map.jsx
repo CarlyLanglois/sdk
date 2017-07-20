@@ -408,7 +408,6 @@ export class Map extends React.Component {
       // TODO: handle other changes to existing layers
       if (layer.id in this.layers) {
         const layer_src = sourcesDef[layer.source];
-        // console.log(layer_src)
         if (layer_src.type === 'geojson') {
           const new_style = getStyleFunction({
             version: 8,
@@ -420,7 +419,6 @@ export class Map extends React.Component {
         this.layers[layer.id].setZIndex(i);
         this.layers[layer.id].setMinResolution(minResolution);
         this.layers[layer.id].setMaxResolution(maxResolution);
-        // this.layers[layer.id].setStyle(new_style);
       }
     }
 

@@ -98,7 +98,6 @@ function main() {
       'circle-color': '#feb24c',
       'circle-stroke-color': '#f03b20',
     },
-    minZoom: 1,
   }));
 
   // The points source has both null island
@@ -252,11 +251,38 @@ function main() {
       source: 'points',
       type: 'circle',
       paint: {
-        'circle-radius': 10,
-        'circle-color': '#f03b20',
+        'circle-radius': {
+          type: 'interval',
+          default: 3,
+          property: 'point_count',
+          stops: [
+            [0, 5], [2, 10], [3, 30],
+          ],
+        },
+        'circle-color': '#feb24c',
         'circle-stroke-color': '#f03b20',
       },
       minZoom: 2,
+    }));
+  };
+
+  // Updates paint object on Null Island layer.
+  const nullToRed = () => {
+    store.dispatch(mapActions.updateLayer('null-island', {
+      source: 'points',
+      type: 'circle',
+      paint: {
+        'circle-radius': {
+          type: 'interval',
+          default: 30,
+          property: 'point_count',
+          stops: [
+            [0, 5], [2, 10], [3, 30],
+          ],
+        },
+        'circle-color': '#f03b20',
+        'circle-stroke-color': '#f03b20',
+      },
     }));
   };
 
@@ -270,6 +296,7 @@ function main() {
       <button className="sdk-btn" onClick={addRandomPoints}>Add 10 random points</button>
       <button className="sdk-btn blue" onClick={removeRandomPoints}>Remove random points</button>
       <button className="sdk-btn" onClick={updateMaxZoom}>Update Max Zoom</button>
+      <button className="sdk-btn" onClick={nullToRed}>Make Null Island Red</button>
       <InputField />
     </div>
   ), document.getElementById('controls'));
