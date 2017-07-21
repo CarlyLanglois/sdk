@@ -195,7 +195,7 @@ function main() {
     // loop over adding a point to the map.
     for (let i = 0; i < 10; i++) {
       // the feature is a normal GeoJSON feature definition,
-      // 'points' referes to the SOURCE which will get the feature.
+      // 'points' refers to the SOURCE which will get the feature.
       store.dispatch(mapActions.addFeatures('points', [{
         type: 'Feature',
         properties: {
