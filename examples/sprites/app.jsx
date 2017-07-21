@@ -82,14 +82,48 @@ function main() {
     }]));
   };
 
-  // These are syntactically correct but philosophically wrong,
-  //  as the game is technically "Duck, Duck, Grey Duck"
-  addSymbol(-45, 0, 'duck');
-  addSymbol(0, 0, 'duck');
-  addSymbol(45, 0, 'goose');
+  addSymbol(0, 0, null);
+
+  const changeSymbol = (x, y, icon) => {
+    store.dispatch(mapActions.removeFeatures('points', [{
+      type: 'Feature',
+      properties: {
+        // ensure the icon property is set.
+        icon,
+      },
+      geometry: {
+        type: 'Point',
+        coordinates: [x, y],
+      },
+    }]));
+    addSymbol(x, y, icon);
+  };
+
+  let count = 0;
+
+  const handleChangeSymbol = () => {
+    if (count % 3 === 0) {
+      changeSymbol(-45, 0, 'duck');
+      count += 1;
+    } else if (count % 3 === 1) {
+      changeSymbol(0, 0, 'duck');
+      count += 1;
+    } else {
+      changeSymbol(45, 0, 'goose');
+      count += 1;
+    }
+  };
 
   // place the map on the page.
   ReactDOM.render(<SdkMap store={store} />, document.getElementById('map'));
+
+  // add some buttons to demo sprite change actions.
+  ReactDOM.render((
+    <div>
+      <b>Play duck duck goose on the map:</b>
+      <button className="sdk-btn" onClick={handleChangeSymbol}>Duck Duck Goose!</button>
+    </div>
+  ), document.getElementById('controls'));
 }
 
 main();

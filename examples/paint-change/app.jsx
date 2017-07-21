@@ -99,8 +99,7 @@ function main() {
 
   addRandomPoints();
 
-  // place the map on the page.
-  ReactDOM.render(<SdkMap store={store} />, document.getElementById('map'));
+  // PAINT CHANGE ACTION AND CONTROL COMPONENTS //
 
   // Demonstrate the paint colors changing.
   const changeColor = (color, type) => {
@@ -194,6 +193,11 @@ function main() {
       >{sizes[i]}</div>
     ));
   }
+
+  // RENDER THE MAP AND CONTROLS //
+
+  // place the map on the page.
+  ReactDOM.render(<SdkMap store={store} />, document.getElementById('map'));
 
   // add some buttons to demo some actions.
   ReactDOM.render((

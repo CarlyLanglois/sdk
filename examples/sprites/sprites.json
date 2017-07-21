@@ -1,14 +1,14 @@
 {
   "duck": {
     "height": 32,
-    "pixelRatio": 1,
+    "pixelRatio": 0.75,
     "width": 32,
     "x": 40,
     "y": 0
   },
   "goose": {
     "height": 40,
-    "pixelRatio": 1,
+    "pixelRatio": 0.5,
     "width": 40,
     "x": 0,
     "y": 0
