@@ -203,6 +203,7 @@ function changeData(state, sourceName, data) {
   src_mixin[sourceName] = Object.assign({}, source, {
     data,
   });
+  console.log(src_mixin.points.data)
 
   // kick back the new state.
   return Object.assign({}, state, {
@@ -313,6 +314,35 @@ function removeFeatures(state, action) {
   return state;
 }
 
+function updateFeatures(state, action) {
+//   // short hand the source source and the data
+//   // const source = state.sources[action.sourceName];
+//   // const data = source.data;
+//   // console.log(state.sources.length)
+//   // // action.layer should be a new mix in for the layer.
+//   const new_features = [];
+//   // for (let i = 0, ii = state.sources.length; i < ii; i++) {
+//   //   // if the id matches, update the layer
+//   //   if (source === action.sourceName) {
+//   if (action.type === MAP.SET_SOURCE_METADATA) {
+//     const meta_update = {};
+//     meta_update[action.key] = action.value;
+//     new_features.push(Object.assign({}, state.sources[action.sourceName], {
+//       metadata: Object.assign({}, state.sources[action.sourceName].metadata, meta_update),
+//     }));
+//   } else {
+//     new_features.push(Object.assign({}, state.sources[action.sourceName], action.features));
+//   }
+//   console.log(new_features)
+//     // // otherwise leave it the same.
+//     // } else {
+//     //   new_features.push(state.sources[i]);
+//     // }
+//   // }
+//
+  return changeData(state, action.sourceName, action.features);
+}
+
 /** Change the visibility of a layer given in the action.
  */
 function setVisibility(state, action) {
@@ -375,6 +405,8 @@ export default function MapReducer(state = defaultState, action) {
     case MAP.SET_LAYER_METADATA:
     case MAP.UPDATE_LAYER:
       return updateLayer(state, action);
+    case MAP.UPDATE_FEATURES:
+      return updateFeatures(state, action);
     case MAP.ADD_SOURCE:
       return addSource(state, action);
     case MAP.REMOVE_SOURCE:

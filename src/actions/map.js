@@ -97,6 +97,14 @@ export function removeFeatures(sourceName, filter) {
   };
 }
 
+export function updateFeatures(sourceName, features) {
+  return {
+    type: MAP.UPDATE_FEATURES,
+    sourceName,
+    features,
+  };
+}
+
 export function setLayerVisibility(layerId, visibility) {
   return {
     type: MAP.SET_LAYER_VISIBILITY,

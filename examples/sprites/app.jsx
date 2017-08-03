@@ -85,7 +85,7 @@ function main() {
   addSymbol(0, 0, null);
 
   const changeSymbol = (x, y, icon) => {
-    store.dispatch(mapActions.removeFeatures('points', [{
+    store.dispatch(mapActions.updateFeatures('points', {
       type: 'Feature',
       properties: {
         // ensure the icon property is set.
@@ -95,8 +95,7 @@ function main() {
         type: 'Point',
         coordinates: [x, y],
       },
-    }]));
-    addSymbol(x, y, icon);
+    }));
   };
 
   let count = 0;
