@@ -3,6 +3,7 @@
 import React from 'react';
 import { shallow, mount } from 'enzyme';
 import nock from 'nock';
+import thunk from 'redux-thunk';
 
 import olMap from 'ol/map';
 import TileLayer from 'ol/layer/tile';
@@ -813,6 +814,87 @@ describe('Map component', () => {
 describe('Map component async', () => {
   afterEach(() => {
     nock.cleanAll();
+  });
+
+  it('NEWWW', () => {
+    const middlewares = [thunk];
+    // const mockStore = configureMockStore(middlewares);
+
+    const store = createStore(combineReducers({
+      middlewares,
+      map: MapReducer,
+    }));
+
+    const body = {
+      version: 8,
+      name: 'states-wms',
+      center: [-98.78906130124426, 37.92686191312036],
+      zoom: 4,
+      sources: {
+        osm: {
+          type: 'raster',
+          attribution: '&copy; <a href=\'https://www.openstreetmap.org/copyright\'>OpenStreetMap</a> contributors.',
+          tileSize: 256,
+          tiles: [
+            'https://a.tile.openstreetmap.org/{z}/{x}/{y}.png',
+            'https://b.tile.openstreetmap.org/{z}/{x}/{y}.png',
+            'https://c.tile.openstreetmap.org/{z}/{x}/{y}.png',
+          ],
+        },
+      },
+      layers: [
+        {
+          id: 'background',
+          type: 'background',
+          paint: {
+            'background-color': 'rgba(0,0,0,0)',
+          },
+        },
+        {
+          id: 'osm',
+          source: 'osm',
+        },
+      ],
+    };
+
+    nock('http://example.com/')
+      .get('/context')
+      .reply(200, body);
+
+    // store.dispatch(MapActions.addSource('osm', {
+    //   type: 'raster',
+    //   tileSize: 256,
+    //   tiles: [
+    //     'https://a.tile.openstreetmap.org/{z}/{x}/{y}.png',
+    //     'https://b.tile.openstreetmap.org/{z}/{x}/{y}.png',
+    //     'https://c.tile.openstreetmap.org/{z}/{x}/{y}.png',
+    //   ],
+    // }));
+
+    // store.dispatch(MapActions.addLayer({
+    //   id: 'osm',
+    //   source: 'osm',
+    // }));
+
+    const wrapper = mount(<ConnectedMap store={store} />);
+    const sdk_map = wrapper.instance().getWrappedInstance();
+
+    const url = 'http://example.com/context';
+    return store.dispatch(MapActions.setContext({ url })).then(() => {
+      // return of async actions
+      // expect(store.getActions()).toEqual([expectedAction]);
+      console.log(sdk_map);
+    });
+
+    // console.log(sdk_map)
+
+    // spyOn(sdk_map, 'handleWMSGetFeatureInfo');
+    //
+    // sdk_map.queryMap({
+    //   pixel: [0, 0],
+    // });
+    //
+    // expect(sdk_map.handleWMSGetFeatureInfo).toHaveBeenCalled();
   });
 
   it('should set spriteData', (done) => {
