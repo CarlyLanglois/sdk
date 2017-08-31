@@ -41,6 +41,114 @@ function main() {
     saveAs(file, 'my_map.json');
   };
 
+  const my_bookmarks = {
+    "type": "FeatureCollection",
+    "features": [
+      {
+        "type": "Feature",
+        "properties": {
+          "title": "Random Point",
+          "isRandom": true
+        },
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            2.336734,
+            48.885318
+          ]
+        }
+      },
+      {
+        "type": "Feature",
+        "properties": {
+          "title": "Random Point",
+          "isRandom": true
+        },
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            2.328989,
+            48.851292
+          ]
+        }
+      },
+      {
+        "type": "Feature",
+        "properties": {
+          "title": "Random Point",
+          "isRandom": true
+        },
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            2.305084,
+            48.856160
+          ]
+        }
+      },
+      {
+        "type": "Feature",
+        "properties": {
+          "title": "Random Point",
+          "isRandom": true
+        },
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            2.308177,
+            48.846262
+          ]
+        }
+      },
+      {
+        "type": "Feature",
+        "properties": {
+          "title": "Random Point",
+          "isRandom": true
+        },
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            2.349671,
+            48.848918
+          ]
+        }
+      },
+      {
+        "type": "Feature",
+        "properties": {
+          "title": "Random Point",
+          "isRandom": true
+        },
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            2.390033,
+            48.875237
+          ]
+        }
+      },
+      {
+        "type": "Feature",
+        "properties": {
+          "title": "Random Point",
+          "isRandom": true
+        },
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            2.367084,
+            48.853757
+          ]
+        }
+      }
+    ]
+  };
+
+  const addBookmarks = () => {
+    store.dispatch(mapActions.addFeatures('bookmarks-source', [my_bookmarks]))
+  };
+
   // place the map on the page.
   ReactDOM.render(
     <SdkMap
@@ -51,6 +159,7 @@ function main() {
   // add a button to demo the action.
   ReactDOM.render((
     <div>
+      <button className="sdk-btn" onClick={addBookmarks}>Add Bookmarks</button>
       <ContextSelector store={store} />
       <h1>Save a Map</h1>
       <h2>To <a href="https://www.mapbox.com/mapbox-gl-js/style-spec/">MapBox Style Specification</a></h2>
