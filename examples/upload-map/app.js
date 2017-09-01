@@ -41,112 +41,127 @@ function main() {
     saveAs(file, 'my_map.json');
   };
 
-  const my_bookmarks = {
-    "type": "FeatureCollection",
-    "features": [
-      {
-        "type": "Feature",
-        "properties": {
-          "title": "Random Point",
-          "isRandom": true
-        },
-        "geometry": {
-          "type": "Point",
-          "coordinates": [
-            2.336734,
-            48.885318
-          ]
-        }
+  const my_bookmarks =
+  [
+    {
+      "type": "Feature",
+      "properties": {
+        "title": "Random Point",
+        "isRandom": true
       },
-      {
-        "type": "Feature",
-        "properties": {
-          "title": "Random Point",
-          "isRandom": true
-        },
-        "geometry": {
-          "type": "Point",
-          "coordinates": [
-            2.328989,
-            48.851292
-          ]
-        }
-      },
-      {
-        "type": "Feature",
-        "properties": {
-          "title": "Random Point",
-          "isRandom": true
-        },
-        "geometry": {
-          "type": "Point",
-          "coordinates": [
-            2.305084,
-            48.856160
-          ]
-        }
-      },
-      {
-        "type": "Feature",
-        "properties": {
-          "title": "Random Point",
-          "isRandom": true
-        },
-        "geometry": {
-          "type": "Point",
-          "coordinates": [
-            2.308177,
-            48.846262
-          ]
-        }
-      },
-      {
-        "type": "Feature",
-        "properties": {
-          "title": "Random Point",
-          "isRandom": true
-        },
-        "geometry": {
-          "type": "Point",
-          "coordinates": [
-            2.349671,
-            48.848918
-          ]
-        }
-      },
-      {
-        "type": "Feature",
-        "properties": {
-          "title": "Random Point",
-          "isRandom": true
-        },
-        "geometry": {
-          "type": "Point",
-          "coordinates": [
-            2.390033,
-            48.875237
-          ]
-        }
-      },
-      {
-        "type": "Feature",
-        "properties": {
-          "title": "Random Point",
-          "isRandom": true
-        },
-        "geometry": {
-          "type": "Point",
-          "coordinates": [
-            2.367084,
-            48.853757
-          ]
-        }
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          2.336734,
+          48.885318
+        ]
       }
-    ]
-  };
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "title": "Random Point",
+        "isRandom": true
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          2.328989,
+          48.851292
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "title": "Random Point",
+        "isRandom": true
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          2.305084,
+          48.856160
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "title": "Random Point",
+        "isRandom": true
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          2.308177,
+          48.846262
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "title": "Random Point",
+        "isRandom": true
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          2.349671,
+          48.848918
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "title": "Random Point",
+        "isRandom": true
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          2.390033,
+          48.875237
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "title": "Random Point",
+        "isRandom": true
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          2.367084,
+          48.853757
+        ]
+      }
+    }
+  ];
 
   const addBookmarks = () => {
-    store.dispatch(mapActions.addFeatures('bookmarks-source', [my_bookmarks]))
+    store.dispatch(mapActions.addSource('bookmarks-source', {
+      type: 'geojson',
+      data: {
+        type: 'FeatureCollection',
+        features: my_bookmarks,
+      }
+    }));
+    store.dispatch(mapActions.addLayer({
+      id: 'bookmarks-layer',
+      source: 'bookmarks-source',
+      paint: {
+        'circle-radius': 5,
+        'circle-color': '#756bb1',
+        'circle-stroke-color': '#756bb1',
+      }
+    }));
+    // store.dispatch(mapActions.addFeatures('bookmarks-source', my_bookmarks));
+    // store.dispatch(mapActions.addFeatures('bookmarks-source', my_bookmarks));
   };
 
   // place the map on the page.
