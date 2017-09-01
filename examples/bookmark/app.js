@@ -31,20 +31,144 @@ function main() {
   // load in the map style from a external .json
   store.dispatch(mapActions.setContext({url:'./bookmarks.json'}));
 
-  // This is the name of the source that the bookmark componet will iterate over
+  const my_bookmarks =
+  [
+    {
+      "type": "Feature",
+      "properties": {
+        "title": "Random Point",
+        "isRandom": true
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          2.336734,
+          48.885318
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "title": "Random Point",
+        "isRandom": true
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          2.328989,
+          48.851292
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "title": "Random Point",
+        "isRandom": true
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          2.305084,
+          48.856160
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "title": "Random Point",
+        "isRandom": true
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          2.308177,
+          48.846262
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "title": "Random Point",
+        "isRandom": true
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          2.349671,
+          48.848918
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "title": "Random Point",
+        "isRandom": true
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          2.390033,
+          48.875237
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "title": "Random Point",
+        "isRandom": true
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          2.367084,
+          48.853757
+        ]
+      }
+    }
+  ];
+
+  const addBookmarks = () => {
+      store.dispatch(mapActions.addSource('bookmarks-source', {
+        type: 'geojson',
+        data: {
+          type: 'FeatureCollection',
+          features: my_bookmarks,
+        }
+      }))
+      store.dispatch(mapActions.addLayer({
+        id: 'bookmarks-layer',
+        source: 'bookmarks-source',
+        paint: {
+          'circle-radius': 5,
+          'circle-color': '#756bb1',
+          'circle-stroke-color': '#756bb1',
+        }
+      }))
+  };
+
+  // addBookmarks();
+
+  // This is the name of the source that the bookmark component will iterate over
   const bookmarkSource = "bookmarks-source";
 
   // place the map on the page
   ReactDOM.render(<SdkMap className='map-container' store={store}/>,
-    document.getElementById('map'));
+    document.getElementById('map'));;
 
-  // place the bookmark control and pass in the features and zoom function
-  ReactDOM.render(<BookmarkComponent className='bookmark-item' store={store} bookmarkSource={bookmarkSource}/>,
-    document.getElementById('bookmark'));
-
+  // // place the bookmark control and pass in the features and zoom function
+  // ReactDOM.render(<BookmarkComponent className='bookmark-item' store={store} bookmarkSource={bookmarkSource}/>,
+  //   document.getElementById('bookmark'));
+  //
   // place the move slide compoent, same slide used in bookmark component
   ReactDOM.render(
-    (<MoveButtonComponent className="sdk-btn" store={store} bookmarkSource={bookmarkSource}/>),
-      document.getElementById('controls'));
+    // (<MoveButtonComponent className="sdk-btn" store={store} bookmarkSource={bookmarkSource}/>),
+    <button className="sdk-btn" onClick={addBookmarks}>Add Bookmarks</button>,
+    document.getElementById('controls'));
 }
 main();
