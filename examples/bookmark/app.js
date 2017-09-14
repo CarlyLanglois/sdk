@@ -116,7 +116,7 @@ function main() {
   ReactDOM.render(<AddBookmarkComponent store={store}/>,
     document.getElementById('addForm'));
 
-  // place the move slide compoent, same slide used in bookmark component
+  // place the move slide component, same slide used in bookmark component
   ReactDOM.render(
     (<div>
         <button className="sdk-btn" onClick={() => {changeSource(SOURCENAMES[1])} }  >St. Louis Bakeries</button>

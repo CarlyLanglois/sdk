@@ -1,0 +1,16 @@
+img {
+  max-width: 150px;
+  max-height: 150px;
+}
+
+.gallery_container {
+  max-height: 250px;
+  overflow: scroll;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+.gallery_container img {
+  vertical-align: top;
+}

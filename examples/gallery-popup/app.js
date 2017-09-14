@@ -1,7 +1,7 @@
-/** Image Popup application.
+/** Gallery Popup application.
  *
  *  Contains a Map and demonstrates displaying a
- *  popup containing an image on the map.
+ *  popup containing an image gallery on the map.
  *
  */
 
@@ -29,47 +29,52 @@ const store = createStore(combineReducers({
 /** A popup for marking features when they
  *  are selected.
  */
-class ImagePopup extends SdkPopup {
+class GalleryPopup extends SdkPopup {
+  constructor(props) {
+    super(props);
+    this.openModal = this.openModal.bind(this);
+  }
+
+  openModal() {
+    const items = [];
+    for (let i = 0; i < this.props.features[0].properties.images.length; i++) {
+      items.push(<div><img src={this.props.features[0].properties.images[i].image} alt={this.props.features[0].properties.images[i].id} /><div>{this.props.features[0].properties.images[i].title}</div></div>)
+    };
+
+    ReactDOM.render(
+      (<div>
+        <p>
+          <strong>Breeds:</strong><br />
+        <br />
+       </p>
+       <div className="gallery_container">
+        {items}
+       </div>
+      </div>),document.getElementById('controls'));
+  };
 
   render() {
-    const feature_ids = this.props.features.map(f => f.properties.id);
-    const feature_imgs = this.props.features.map(f => f.properties.image);
-    const feature_titles = this.props.features.map(f => f.properties.title);
-
     return this.renderPopup((
       <div className="sdk-popup-content">
-        <p>
-          Breed(s) from here:<br />
-        <code>{ feature_titles.join(', ') }</code>
-        <br />
-        <img src={feature_imgs} alt={feature_ids} />
-      </p>
-    </div>
-  ));
+        <button className="sdk-btn" onClick={this.openModal}>View Image Gallery</button>
+      </div>
+   ));
   }
 }
 
-function addDogs(sourceName, data) {
-  for (let i = 0; i < data.length; i++) {
-    const dog = data[i];
-    const id = dog.id;
-    const title = dog.title;
-    const coordinates = dog.coordinates;
-    const image = dog.image;
-    // the feature is a normal GeoJSON feature definition
+function addDog(sourceName, data) {
     store.dispatch(mapActions.addFeatures(sourceName, [{
       type: 'Feature',
       properties: {
-        id,
-        title,
-        image
+        id: 'Gallery ID',
+        title: 'Gallery Title',
+        images: data,
       },
       geometry: {
         type: 'Point',
-        coordinates,
+        coordinates: [0,0],
       },
     }]));
-  }
 };
 
 function main() {
@@ -120,9 +125,16 @@ function main() {
     {id:'dog-5', title:'Mucuchí', coordinates: [-71.0126, 8.5702], image:'dogs/mucuchi.jpg'},
     {id:'dog-6', title:'Malamute', coordinates: [-149.4937, 64.2008], image:'dogs/malamute.jpg'},
     {id:'dog-7', title:'Cavapoo', coordinates: [133.7751, -25.2744], image:'dogs/cavapoo.jpg'},
+    {id:'dog-1', title:'Akita', coordinates: [140.1024, 39.7186], image:'dogs/akita.jpg'},
+    {id:'dog-2', title:'Basenji', coordinates: [21.7587, 4.0383], image:'dogs/basenji.jpg'},
+    {id:'dog-3', title:'Cairn Terrier', coordinates: [-4.71, 57.12], image:'dogs/cairn.jpg'},
+    {id:'dog-4', title:'Xoloitzcuintli', coordinates: [-99.89, 16.86], image:'dogs/xoloitzcuintli.jpg'},
+    {id:'dog-5', title:'Mucuchí', coordinates: [-71.0126, 8.5702], image:'dogs/mucuchi.jpg'},
+    {id:'dog-6', title:'Malamute', coordinates: [-149.4937, 64.2008], image:'dogs/malamute.jpg'},
+    {id:'dog-7', title:'Cavapoo', coordinates: [133.7751, -25.2744], image:'dogs/cavapoo.jpg'},
   ];
 
-  addDogs('dogs', dog_data);
+  addDog('dogs', dog_data);
 
   ReactDOM.render((
     <SdkMap
@@ -149,11 +161,7 @@ function main() {
             map.addPopup(<SdkPopup coordinate={xy} closeable><i>No dogs here.</i></SdkPopup>);
           } else {
             // Show the super advanced fun popup!
-            const img = new Image();
-            img.onload = () => {
-              map.addPopup(<ImagePopup coordinate={xy} features={features} closeable />);
-            };
-            img.src = features[0].properties.image;
+            map.addPopup(<GalleryPopup coordinate={xy} features={features} closeable />);
           }
         });
       }}
