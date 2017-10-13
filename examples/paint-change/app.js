@@ -1,3 +1,4 @@
+/* global saveAs */
 /** Demonstrate changing the color of points at run time.
  *
  */
@@ -14,6 +15,9 @@ import SdkMap from '@boundlessgeo/sdk/components/map';
 import SdkZoomControl from '@boundlessgeo/sdk/components/map/zoom-control';
 import SdkMapReducer from '@boundlessgeo/sdk/reducers/map';
 import * as mapActions from '@boundlessgeo/sdk/actions/map';
+import * as printActions from '@boundlessgeo/sdk/actions/print';
+
+import PDFExporter from './pdf';
 
 // This will have webpack include all of the SDK styles.
 import '@boundlessgeo/sdk/stylesheet/sdk.scss';
@@ -102,12 +106,21 @@ function main() {
 
   addRandomPoints();
 
+  const exportMapImage = (blob) => {
+    saveAs(blob, 'map.png');
+    store.dispatch(printActions.receiveMapImage());
+  };
+
   // place the map on the page.
   ReactDOM.render(<Provider store={store}>
-    <SdkMap>
+    <SdkMap onExportImage={exportMapImage}>
       <SdkZoomControl />
     </SdkMap>
   </Provider>, document.getElementById('map'));
+
+  const exportImage = () => {
+    store.dispatch(printActions.exportMapImage());
+  };
 
   // Demonstrate the paint colors changing.
   const changeColor = (color, type) => {
@@ -218,6 +231,8 @@ function main() {
         <b>Change the size of the points on the map:</b> <br />
         <div>{size_controls}</div>
       </div>
+      <PDFExporter store={store}/>
+      <button className="sdk-btn" onClick={exportImage}>Export map image</button>
     </div>
   ), document.getElementById('controls'));
 }
