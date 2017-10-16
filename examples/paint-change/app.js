@@ -14,6 +14,7 @@ import { Provider } from 'react-redux';
 import SdkMap from '@boundlessgeo/sdk/components/map';
 import SdkZoomControl from '@boundlessgeo/sdk/components/map/zoom-control';
 import SdkMapReducer from '@boundlessgeo/sdk/reducers/map';
+import SdkPrintReducer from '@boundlessgeo/sdk/reducers/print';
 import * as mapActions from '@boundlessgeo/sdk/actions/map';
 import * as printActions from '@boundlessgeo/sdk/actions/print';
 
@@ -25,6 +26,7 @@ import '@boundlessgeo/sdk/stylesheet/sdk.scss';
 /* eslint-disable no-underscore-dangle */
 const store = createStore(combineReducers({
   map: SdkMapReducer,
+  print: SdkPrintReducer,
 }), window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__(),
    applyMiddleware(thunkMiddleware));
 
